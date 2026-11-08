@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gratis Stroop-test online</title>
+<meta name="description" content="En gratis Stroop-test i din browser: svar med blækkets farve, ikke med ordet. Ét minut, så får du din Stroop-effekt, rigtige svar og gennemsnitstid.">
+<link rel="alternate" hreflang="en" href="https://kevinsarrazin.github.io/free-stroop-test-online/">
+<link rel="alternate" hreflang="fr" href="https://kevinsarrazin.github.io/free-stroop-test-online/fr/">
+<link rel="alternate" hreflang="de" href="https://kevinsarrazin.github.io/free-stroop-test-online/de/">
+<link rel="alternate" hreflang="es-MX" href="https://kevinsarrazin.github.io/free-stroop-test-online/es-MX/">
+<link rel="alternate" hreflang="pt-BR" href="https://kevinsarrazin.github.io/free-stroop-test-online/pt-BR/">
+<link rel="alternate" hreflang="it" href="https://kevinsarrazin.github.io/free-stroop-test-online/it/">
+<link rel="alternate" hreflang="nl" href="https://kevinsarrazin.github.io/free-stroop-test-online/nl/">
+<link rel="alternate" hreflang="pl" href="https://kevinsarrazin.github.io/free-stroop-test-online/pl/">
+<link rel="alternate" hreflang="da" href="https://kevinsarrazin.github.io/free-stroop-test-online/da/">
+<link rel="alternate" hreflang="sv" href="https://kevinsarrazin.github.io/free-stroop-test-online/sv/">
+<link rel="alternate" hreflang="ru" href="https://kevinsarrazin.github.io/free-stroop-test-online/ru/">
+<link rel="alternate" hreflang="id" href="https://kevinsarrazin.github.io/free-stroop-test-online/id/">
+<link rel="alternate" hreflang="hi" href="https://kevinsarrazin.github.io/free-stroop-test-online/hi/">
+<link rel="alternate" hreflang="ja" href="https://kevinsarrazin.github.io/free-stroop-test-online/ja/">
+<link rel="alternate" hreflang="ko" href="https://kevinsarrazin.github.io/free-stroop-test-online/ko/">
+<link rel="alternate" hreflang="zh-Hans" href="https://kevinsarrazin.github.io/free-stroop-test-online/zh-Hans/">
+<link rel="alternate" hreflang="zh-HK" href="https://kevinsarrazin.github.io/free-stroop-test-online/zh-HK/">
+<link rel="alternate" hreflang="x-default" href="https://kevinsarrazin.github.io/free-stroop-test-online/">
+<style>
+  :root {
+    --bg: #E9EFF9;
+    --surface: #FFFFFF;
+    --ink: #0E1B3F;
+    --ink-2: #4A5677;
+    --accent: #1E43B8;
+    --line: #D3DCEC;
+    --scene: #FBFBFD;
+    --wrong: #F3D5C8;
+    --ink-red: #E8141C;
+    --ink-blue: #0A4DFF;
+    --ink-green: #0A9E3C;
+    --ink-yellow: #F2B800;
+    --ink-purple: #8A1FE0;
+    --ink-black: #000000;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #070B18;
+      --surface: #161C2C;
+      --ink: #EEF3FC;
+      --ink-2: #A9B6D3;
+      --accent: #66B5FF;
+      --line: #2A3349;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Noto Sans", sans-serif;
+  }
+  main { max-width: 720px; margin: 0 auto; padding: 32px 16px 48px; }
+  h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 8px; }
+  h2 { font-size: 1.25rem; margin: 32px 0 8px; }
+  p { margin: 0 0 12px; }
+  .lead { color: var(--ink-2); }
+  a { color: var(--accent); }
+  button.link { background: none; border: 0; padding: 0; color: var(--accent); font: inherit; cursor: pointer; text-decoration: underline; }
+
+  /* The stage stays LIGHT in both themes while testing: the black ink would
+     disappear on a dark background. */
+  .stage {
+    position: relative;
+    margin-top: 20px;
+    min-height: 240px;
+    border-radius: 20px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+    padding: 20px 16px;
+    transition: background-color .15s linear;
+  }
+  .stage[data-phase="countdown"], .stage[data-phase="running"] { background: var(--scene); color: #0E1B3F; }
+  .stage.is-wrong { background: var(--wrong); }
+  .status { margin: 0; font-weight: 600; color: var(--ink-2); }
+  .stage[data-phase="countdown"] .status, .stage[data-phase="running"] .status { display: none; }
+  .question { margin: 0; color: #4A5578; display: none; }
+  .stage[data-phase="running"] .question { display: block; }
+  .word { margin: 0; min-height: 1.1em; font-size: clamp(2.6rem, 10vw, 4.2rem); font-weight: 800; line-height: 1.1; letter-spacing: .04em; text-transform: uppercase; display: none; }
+  .stage[data-phase="running"] .word { display: block; }
+  .countdown { font-size: 3.5rem; font-weight: 800; display: none; }
+  .stage[data-phase="countdown"] .countdown { display: block; }
+  .start { font: inherit; font-weight: 700; color: #FFFFFF; background: var(--accent); border: 0; border-radius: 999px; padding: 12px 26px; cursor: pointer; }
+  [data-ink="red"] { color: var(--ink-red); }
+  [data-ink="blue"] { color: var(--ink-blue); }
+  [data-ink="green"] { color: var(--ink-green); }
+  [data-ink="yellow"] { color: var(--ink-yellow); }
+  [data-ink="purple"] { color: var(--ink-purple); }
+  [data-ink="black"] { color: var(--ink-black); }
+
+  .answers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+  .answer {
+    font: inherit; font-weight: 600; color: var(--ink); background: var(--surface);
+    border: 1px solid var(--line); border-radius: 12px; padding: 12px 6px; cursor: pointer;
+    touch-action: manipulation; overflow-wrap: break-word; hyphens: auto;
+  }
+  .answer:disabled { opacity: .45; cursor: default; }
+  .answer .key { display: block; font-size: .75rem; font-weight: 400; color: var(--ink-2); }
+  .hint { margin-top: 8px; font-size: .85rem; color: var(--ink-2); }
+  .progress { height: 4px; margin-top: 12px; border-radius: 2px; background: var(--line); overflow: hidden; }
+  .progress span { display: block; height: 100%; width: 100%; background: var(--accent); }
+  .bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 10px; color: var(--ink-2); font-size: .95rem; }
+
+  .results { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
+  .card { min-width: 0; overflow-wrap: break-word; hyphens: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+  .card.main { grid-column: 1 / -1; }
+  .card dt { color: var(--ink-2); font-size: .9rem; }
+  .card dd { margin: 2px 0 0; font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .card.main dd { font-size: 2.6rem; }
+  .card .hint, .card .note { font-size: .85rem; font-weight: 400; color: var(--ink-2); margin-top: 4px; }
+
+  .history { list-style: none; padding: 0; margin: 8px 0 0; }
+  .history li { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--line); padding: 6px 0; font-variant-numeric: tabular-nums; }
+  .history .empty { color: var(--ink-2); border: 0; }
+
+  .cta { margin-top: 32px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; }
+  footer { margin-top: 32px; color: var(--ink-2); font-size: .9rem; }
+  .langs { display: flex; flex-wrap: wrap; gap: 6px 14px; list-style: none; padding: 0; margin: 12px 0 0; }
+  .langs a[aria-current] { color: var(--ink); font-weight: 700; text-decoration: none; }
+  .visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (max-width: 480px) {
+    h1 { font-size: 1.6rem; }
+    .stage { min-height: 200px; }
+    .results { grid-template-columns: minmax(0, 1fr); }
+    .history li { flex-direction: column; gap: 0; }
+  }
+  /* Long color words (Фиолетовый, Fioletowy) do not fit a third of a small phone. */
+  @media (max-width: 420px) {
+    .answers { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .stage { transition: none; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Gratis Stroop-test</h1>
+  <p class="lead">Et farveord vises med farvet blæk. Svar med blækkets farve, ikke med ordet, så hurtigt du kan. Efter et minut får du din Stroop-effekt: hvor meget langsommere du er, når ord og blæk ikke passer sammen. Intet at installere, intet bliver sendt videre.</p>
+
+  <div class="stage" id="stage" data-phase="idle" tabindex="-1" role="group" aria-label="Gratis Stroop-test">
+    <p class="status" id="status">Klar</p>
+    <p class="question">Hvilken farve har blækket?</p>
+    <p class="word" id="word" aria-hidden="true"></p>
+    <span class="countdown" id="countdown" aria-hidden="true"></span>
+    <button type="button" class="start" id="start">Start</button>
+  </div>
+  <p class="visually-hidden" role="status" id="announce"></p>
+
+  <div class="answers" id="answers"><button type="button" class="answer" data-color="red" disabled>Rød<span class="key">1</span></button><button type="button" class="answer" data-color="blue" disabled>Blå<span class="key">2</span></button><button type="button" class="answer" data-color="green" disabled>Grøn<span class="key">3</span></button><button type="button" class="answer" data-color="yellow" disabled>Gul<span class="key">4</span></button><button type="button" class="answer" data-color="purple" disabled>Lilla<span class="key">5</span></button><button type="button" class="answer" data-color="black" disabled>Sort<span class="key">6</span></button></div>
+  <p class="hint">På et tastatur svarer tasterne 1 til 6 til knapperne i samme rækkefølge.</p>
+  <div class="progress" aria-hidden="true"><span id="progress"></span></div>
+  <div class="bar">
+    <span><span id="left"></span> · <span id="answered"></span></span>
+    <button type="button" class="link" id="stop" hidden>Stop</button>
+  </div>
+
+  <h2>Dine resultater</h2>
+  <dl class="results">
+    <div class="card main"><dt>Stroop-effekt</dt><dd><span id="effect">—</span> ms</dd><dd class="note" id="note">Dine resultater vises her.</dd><dd class="hint">Over nul: du var langsommere, når ord og blæk var forskellige. Det er det almindelige resultat.</dd></div>
+    <div class="card"><dt>Rigtige svar</dt><dd><span id="accuracy">—</span></dd></div>
+    <div class="card"><dt>Gennemsnitstid (rigtige svar)</dt><dd><span id="mean">—</span> ms</dd></div>
+    <div class="card"><dt>Ord og blæk ens</dt><dd><span id="congruent">—</span> ms</dd></div>
+    <div class="card"><dt>Ord og blæk forskellige</dt><dd><span id="incongruent">—</span> ms</dd></div>
+  </dl>
+
+  <h2>Seneste test</h2>
+  <ul class="history" id="history"><li class="empty">Ingen test gemt i denne browser.</li></ul>
+  <p><button type="button" class="link" id="clear" hidden>Ryd historik</button></p>
+
+  <h2>Hvad Stroop-effekten viser</h2>
+  <p>Læsning sker automatisk: du læser ordet, før du kan nå at stoppe dig selv. Når ordet nævner en anden farve end blækkets, skal du holde det første svar tilbage, og det tager tid. Stroop-effekten er den ekstra tid, i millisekunder.</p>
+  <p>De fleste svarer langsommere på ord, der ikke passer til blækket, ofte med flere snese millisekunder. Træthed, distraktion og øvelse påvirker alle resultatet, så sammenlign dig med dig selv, på samme tidspunkt af dagen.</p>
+  <p>Testen måler én form for kontrol med opmærksomheden i én opgave. Den er ikke en diagnose og heller ikke en klinisk opmærksomhedstest.</p>
+
+  <div class="cta">
+    <p><strong>Vil du have tre testlængder på 17 sprog?</strong> <a href="https://upchin.app/da/vaerktoejer/stroop-test">Stroop-testen på upchin.app</a> har test på 30 sekunder, 1 minut og 3 minutter, forklarer hvert tal og lader dig dele et resultat.</p>
+    <p style="margin:0">Den er lavet af holdet bag <a href="https://upchin.app/da">Upchin</a>, en iPhone-app, der med Apples Skærmtid hjælper dig med at bruge mindre tid på distraherende apps.</p>
+  </div>
+
+  <footer>
+    <p>Open source, én HTML-fil, ingen sporing. Dine resultater bliver i browserens lokale lager.</p>
+    <nav aria-label="Sprog">
+      <ul class="langs"><li><a href=".././" hreflang="en" lang="en">English</a></li><li><a href="../fr/" hreflang="fr" lang="fr">Français</a></li><li><a href="../de/" hreflang="de" lang="de">Deutsch</a></li><li><a href="../es-MX/" hreflang="es-MX" lang="es-MX">Español (México)</a></li><li><a href="../pt-BR/" hreflang="pt-BR" lang="pt-BR">Português (Brasil)</a></li><li><a href="../it/" hreflang="it" lang="it">Italiano</a></li><li><a href="../nl/" hreflang="nl" lang="nl">Nederlands</a></li><li><a href="../pl/" hreflang="pl" lang="pl">Polski</a></li><li><a href="../da/" hreflang="da" lang="da" aria-current="page">Dansk</a></li><li><a href="../sv/" hreflang="sv" lang="sv">Svenska</a></li><li><a href="../ru/" hreflang="ru" lang="ru">Русский</a></li><li><a href="../id/" hreflang="id" lang="id">Bahasa Indonesia</a></li><li><a href="../hi/" hreflang="hi" lang="hi">हिन्दी</a></li><li><a href="../ja/" hreflang="ja" lang="ja">日本語</a></li><li><a href="../ko/" hreflang="ko" lang="ko">한국어</a></li><li><a href="../zh-Hans/" hreflang="zh-Hans" lang="zh-Hans">简体中文</a></li><li><a href="../zh-HK/" hreflang="zh-HK" lang="zh-HK">繁體中文（香港）</a></li></ul>
+    </nav>
+  </footer>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  var T = {"start": "Start", "again": "Tag testen igen", "status_idle": "Klar", "status_countdown": "Gør dig klar", "status_finished": "Færdig", "status_stopped": "Afbrudt", "aria_idle": "Testfelt. Tryk på Start, og svar så med blækkets farve.", "aria_countdown": "Nedtælling.", "aria_running": "Testen er i gang. Svar med blækkets farve med knapperne eller tasterne 1 til 6.", "aria_finished": "Testen er færdig. Resultaterne står under testfeltet.", "aria_stopped": "Testen er afbrudt. De foreløbige resultater står under testfeltet.", "left": "{s} s tilbage", "answered": "{n} svar", "note_empty": "Dine resultater vises her.", "note_final": "Forskel i gennemsnitstid mellem ord, der ikke passer til blækket, og ord, der gør · {n} svar på {s} s.", "note_stopped": "Afbrudt før tid · {n} svar. Denne runde bliver ikke gemt.", "note_few": "For få rigtige svar til at tolke forskellen.", "history_empty": "Ingen test gemt i denne browser.", "history_line": "effekt {effect} ms · {n} svar · {p} % rigtige", "confirm_clear": "Vil du slette de test, der er gemt i denne browser?", "colors": {"red": "Rød", "blue": "Blå", "green": "Grøn", "yellow": "Gul", "purple": "Lilla", "black": "Sort"}};
+  var COLORS = ["red", "blue", "green", "yellow", "purple", "black"];
+  var DURATION_S = 60;
+  var COUNTDOWN_S = 3;
+  var PAUSE_MS = 120;
+  var WRONG_MS = 250;
+  var MIN_PER_CONDITION = 5;
+  var HISTORY_KEY = "stroop-test-history";
+  var HISTORY_MAX = 10;
+  var LANG = document.documentElement.lang || "en";
+
+  function t(key, values) {
+    var s = T[key] || "";
+    if (values) {
+      Object.keys(values).forEach(function (k) { s = s.split("{" + k + "}").join(String(values[k])); });
+    }
+    return s;
+  }
+  function $(id) { return document.getElementById(id); }
+  function num(n) { return Number(n).toLocaleString(LANG); }
+
+  var ui = {
+    stage: $("stage"), status: $("status"), word: $("word"), countdown: $("countdown"), start: $("start"),
+    announce: $("announce"), progress: $("progress"), left: $("left"), answered: $("answered"), stop: $("stop"),
+    effect: $("effect"), note: $("note"), accuracy: $("accuracy"), mean: $("mean"),
+    congruent: $("congruent"), incongruent: $("incongruent"), history: $("history"), clear: $("clear")
+  };
+  var answerButtons = Array.prototype.slice.call(document.querySelectorAll("#answers [data-color]"));
+
+  var phase = "idle";
+  var deadline = 0;
+  var trials = [];
+  var queue = [];
+  var trial = null;
+  var previous = null;
+  var t0 = 0;
+  var ready = false;
+  var timers = [];
+  var clock = null;
+  var token = 0;
+
+  function later(f, ms) { timers.push(setTimeout(f, ms)); }
+  function cancelAll() {
+    timers.forEach(clearTimeout);
+    timers = [];
+    clearInterval(clock);
+    clock = null;
+    ready = false;
+  }
+  function shuffle(a) {
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var x = a[i]; a[i] = a[j]; a[j] = x;
+    }
+    return a;
+  }
+  // One block: each ink twice with its own word (congruent), twice with another word (incongruent).
+  function block() {
+    var b = [];
+    COLORS.forEach(function (ink) {
+      var others = COLORS.filter(function (c) { return c !== ink; });
+      for (var k = 0; k < 2; k++) {
+        b.push({ ink: ink, word: ink, condition: "congruent" });
+        b.push({ ink: ink, word: others[Math.floor(Math.random() * others.length)], condition: "incongruent" });
+      }
+    });
+    return shuffle(b);
+  }
+  // Never the same word and ink twice in a row.
+  function nextTrial() {
+    if (!queue.length) { queue = block(); }
+    var next = queue.pop();
+    if (previous && next.ink === previous.ink && next.word === previous.word && queue.length) {
+      var other = queue.pop();
+      queue.unshift(next);
+      next = other;
+    }
+    return next;
+  }
+
+  function setPhase(p) {
+    phase = p;
+    ui.stage.setAttribute("data-phase", p);
+    ui.status.textContent = t("status_" + p);
+    ui.announce.textContent = t("aria_" + p);
+    ui.start.hidden = !(p === "idle" || p === "finished" || p === "stopped");
+    ui.start.textContent = t(p === "idle" ? "start" : "again");
+    ui.stop.hidden = p !== "running";
+    answerButtons.forEach(function (b) { b.disabled = p !== "running"; });
+  }
+  function showLeft(ms) {
+    ui.left.textContent = t("left", { s: Math.ceil(Math.max(0, ms) / 1000) });
+    ui.progress.style.width = (Math.max(0, ms) / (DURATION_S * 1000) * 100).toFixed(2) + "%";
+  }
+  function showCount() { ui.answered.textContent = t("answered", { n: num(trials.length) }); }
+
+  function start() {
+    cancelAll();
+    token++;
+    trials = [];
+    queue = [];
+    previous = null;
+    showCount();
+    showLeft(DURATION_S * 1000);
+    clearResults();
+    setPhase("countdown");
+    ui.stage.focus({ preventScroll: true });
+    var remaining = COUNTDOWN_S;
+    var mine = token;
+    ui.countdown.textContent = String(remaining);
+    (function tick() {
+      later(function () {
+        if (mine !== token) { return; }
+        remaining--;
+        if (remaining > 0) { ui.countdown.textContent = String(remaining); tick(); }
+        else { run(mine); }
+      }, 1000);
+    })();
+  }
+  function run(mine) {
+    setPhase("running");
+    deadline = performance.now() + DURATION_S * 1000;
+    clock = setInterval(function () {
+      var rest = deadline - performance.now();
+      showLeft(rest);
+      if (rest <= 0) { finish(false); }
+    }, 100);
+    present(mine);
+  }
+  // The clock starts on the frame AFTER the word is drawn (two animation frames).
+  function present(mine) {
+    if (phase !== "running" || mine !== token) { return; }
+    if (performance.now() >= deadline) { finish(false); return; }
+    trial = nextTrial();
+    previous = trial;
+    ready = false;
+    ui.word.textContent = T.colors[trial.word];
+    ui.word.setAttribute("data-ink", trial.ink);
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        if (phase === "running" && mine === token) { t0 = performance.now(); ready = true; }
+      });
+    });
+  }
+  function answer(color) {
+    if (phase !== "running" || !ready) { return; }
+    var now = performance.now();
+    if (now >= deadline) { finish(false); return; }
+    ready = false;
+    var right = color === trial.ink;
+    trials.push({ condition: trial.condition, right: right, ms: Math.round(now - t0) });
+    showCount();
+    ui.word.textContent = "";
+    ui.word.removeAttribute("data-ink");
+    if (!right) {
+      ui.stage.classList.add("is-wrong");
+      later(function () { ui.stage.classList.remove("is-wrong"); }, WRONG_MS);
+    }
+    var mine = token;
+    later(function () { present(mine); }, PAUSE_MS);
+  }
+
+  function average(a) {
+    if (!a.length) { return null; }
+    return Math.round(a.reduce(function (x, y) { return x + y; }, 0) / a.length);
+  }
+  // Only correct answers count in the times; the effect is incongruent minus congruent.
+  function measures() {
+    var right = trials.filter(function (e) { return e.right; });
+    var times = function (c) { return right.filter(function (e) { return e.condition === c; }).map(function (e) { return e.ms; }); };
+    var c = times("congruent"), i = times("incongruent");
+    var mc = average(c), mi = average(i);
+    return {
+      answers: trials.length,
+      accuracy: trials.length ? Math.round(100 * right.length / trials.length) : null,
+      mean: average(right.map(function (e) { return e.ms; })),
+      congruent: mc,
+      incongruent: mi,
+      effect: mc !== null && mi !== null ? mi - mc : null,
+      enough: c.length >= MIN_PER_CONDITION && i.length >= MIN_PER_CONDITION
+    };
+  }
+  function ms(v) { return v === null ? "—" : num(v); }
+  function signed(v) { return (v > 0 ? "+" : "") + num(v); }
+  function clearResults() {
+    ["effect", "accuracy", "mean", "congruent", "incongruent"].forEach(function (k) { ui[k].textContent = "—"; });
+    ui.note.textContent = t("note_empty");
+  }
+  function showResults(m, stopped) {
+    // A negative effect keeps its sign: this is a measurement, not a score.
+    ui.effect.textContent = m.effect === null ? "—" : signed(m.effect);
+    ui.accuracy.textContent = m.accuracy === null ? "—" : num(m.accuracy) + " %";
+    ui.mean.textContent = ms(m.mean);
+    ui.congruent.textContent = ms(m.congruent);
+    ui.incongruent.textContent = ms(m.incongruent);
+    var note = t(stopped ? "note_stopped" : "note_final", { n: num(m.answers), s: num(DURATION_S) });
+    if (!m.enough) { note += " " + t("note_few"); }
+    ui.note.textContent = note;
+  }
+  function finish(stopped) {
+    if (phase !== "running") { return; }
+    cancelAll();
+    token++;
+    ui.word.textContent = "";
+    ui.word.removeAttribute("data-ink");
+    ui.stage.classList.remove("is-wrong");
+    showLeft(stopped ? deadline - performance.now() : 0);
+    var m = measures();
+    setPhase(stopped ? "stopped" : "finished");
+    if (!m.answers) { clearResults(); return; }
+    showResults(m, stopped);
+    // Only a test that ran to the end is saved: a stopped one does not compare.
+    if (!stopped) { save(m); }
+  }
+
+  // History: per-browser convenience only. Storage may be unavailable.
+  function loadHistory() {
+    try { return JSON.parse(localStorage.getItem(HISTORY_KEY)) || []; } catch (e) { return []; }
+  }
+  function save(m) {
+    var list = loadHistory();
+    list.unshift({ d: Date.now(), effect: m.effect, answers: m.answers, accuracy: m.accuracy });
+    list = list.slice(0, HISTORY_MAX);
+    try { localStorage.setItem(HISTORY_KEY, JSON.stringify(list)); } catch (e) {}
+    renderHistory(list);
+  }
+  function renderHistory(list) {
+    list = list || loadHistory();
+    ui.history.innerHTML = "";
+    if (!list.length) {
+      var empty = document.createElement("li");
+      empty.className = "empty";
+      empty.textContent = t("history_empty");
+      ui.history.appendChild(empty);
+      ui.clear.hidden = true;
+      return;
+    }
+    list.forEach(function (h) {
+      var li = document.createElement("li");
+      var date;
+      try { date = new Date(h.d).toLocaleString(LANG, { dateStyle: "medium", timeStyle: "short" }); }
+      catch (e) { date = new Date(h.d).toLocaleString(); }
+      var left = document.createElement("span");
+      left.textContent = date;
+      var right = document.createElement("span");
+      right.textContent = t("history_line", { effect: h.effect === null ? "—" : signed(h.effect), n: num(h.answers), p: h.accuracy === null ? "—" : num(h.accuracy) });
+      li.appendChild(left);
+      li.appendChild(right);
+      ui.history.appendChild(li);
+    });
+    ui.clear.hidden = false;
+  }
+
+  ui.start.addEventListener("click", start);
+  ui.stop.addEventListener("click", function () { finish(true); });
+  answerButtons.forEach(function (b) {
+    // pointerdown: the answer is taken on contact, without the release delay.
+    b.addEventListener("pointerdown", function (e) {
+      if (e.button !== undefined && e.button !== 0) { return; }
+      e.preventDefault();
+      answer(b.getAttribute("data-color"));
+    });
+    // Keyboard activation (Enter, Space on the focused button) arrives as a click with detail 0.
+    b.addEventListener("click", function (e) { if (e.detail === 0) { answer(b.getAttribute("data-color")); } });
+  });
+  document.addEventListener("keydown", function (e) {
+    if (phase !== "running" || e.altKey || e.ctrlKey || e.metaKey || e.repeat) { return; }
+    var i = ["1", "2", "3", "4", "5", "6"].indexOf(e.key);
+    if (i !== -1) { e.preventDefault(); answer(COLORS[i]); }
+  });
+  ui.clear.addEventListener("click", function () {
+    if (!window.confirm(t("confirm_clear"))) { return; }
+    try { localStorage.removeItem(HISTORY_KEY); } catch (e) {}
+    renderHistory([]);
+  });
+  // Time spent in another tab is not an answer: the test stops.
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden && phase === "countdown") { cancelAll(); token++; setPhase("idle"); }
+    else if (document.hidden && phase === "running") { finish(true); }
+  });
+
+  showLeft(DURATION_S * 1000);
+  showCount();
+  setPhase("idle");
+  ui.announce.textContent = "";
+  renderHistory();
+})();
+</script>
+</body>
+</html>
