@@ -27,7 +27,7 @@ Większość osób odpowiada wolniej, gdy słowo oznacza inny kolor niż kolor t
 
 Ten test mierzy jeden rodzaj kontroli uwagi w jednym zadaniu. To nie jest diagnoza ani kliniczny test uwagi.
 
-## Osadź test na swojej stronie
+## Umieść test na swojej stronie
 
 Pełny test Stroopa z upchin.app możesz bezpłatnie pokazać na własnej stronie. Jest dostępny w 17 językach: ustaw `data-lang` (lub `lang=` w adresie ramki) na jeden z kodów: `en`, `fr`, `de`, `es-MX`, `pt-BR`, `it`, `nl`, `pl`, `da`, `sv`, `ru`, `id`, `hi`, `ja`, `ko`, `zh-Hans`, `zh-HK`.
 

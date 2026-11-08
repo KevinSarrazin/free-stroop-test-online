@@ -8,7 +8,7 @@ Coba online: https://kevinsarrazin.github.io/free-stroop-test-online/id/
 
 Sebuah kata warna muncul dengan tinta berwarna. Jawab dengan warna tintanya, bukan katanya, lewat tombol atau tuts 1 sampai 6. Setelah satu menit, kamu mendapat:
 
-- **Efek Stroop**: seberapa lebih lambat kamu menjawab saat kata dan tintanya berbeda dibanding saat keduanya cocok.
+- **Efek Stroop**: seberapa jauh kamu melambat saat kata dan tintanya berbeda dibanding saat keduanya cocok.
 - **Jawaban benar**: persentase jawaban yang benar.
 - **Waktu rata-rata**: rata-rata waktu jawabanmu, hanya dari jawaban yang benar.
 - **Kata sama dengan tinta / beda dengan tinta**: dua rata-rata yang menjadi dasar perhitungan efek Stroop.

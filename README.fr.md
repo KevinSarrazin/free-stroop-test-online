@@ -13,7 +13,7 @@ Un nom de couleur s’affiche, écrit dans une encre de couleur. Réponds à la 
 - **Temps moyen** : ton temps de réponse moyen, calculé sur les seules réponses justes.
 - **Mot et encre identiques / différents** : les deux moyennes à partir desquelles l’effet Stroop est calculé.
 
-Chaque bloc d’essais compte autant de mots qui correspondent à leur encre que de mots qui n’y correspondent pas, chaque couleur d’encre y revient aussi souvent, et jamais deux fois de suite le même mot dans la même encre. Seules les réponses justes comptent dans les temps.
+Chaque bloc d’essais compte autant de mots qui correspondent à leur encre que de mots qui n’y correspondent pas, chaque couleur d’encre y revient le même nombre de fois, et jamais deux fois de suite le même mot dans la même encre. Seules les réponses justes comptent dans les temps.
 
 Les dix derniers tests sont conservés dans le stockage local de ton navigateur. Rien n’est envoyé nulle part : aucun pistage, aucun script externe, aucune inscription.
 

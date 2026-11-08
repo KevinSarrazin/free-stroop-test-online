@@ -27,7 +27,7 @@ De fleste svarer langsommere, når ordet nævner en anden farve end blækkets, o
 
 Testen måler én form for kontrol med opmærksomheden i én opgave. Den er ikke en diagnose og heller ikke en klinisk opmærksomhedstest.
 
-## Indlejr testen på dit websted
+## Sæt testen på dit websted
 
 Du kan gratis vise den fulde Stroop-test fra upchin.app på din egen side. Den findes på 17 sprog: sæt `data-lang` (eller `lang=` i rammens adresse) til `en`, `fr`, `de`, `es-MX`, `pt-BR`, `it`, `nl`, `pl`, `da`, `sv`, `ru`, `id`, `hi`, `ja`, `ko`, `zh-Hans`, `zh-HK`.
 
