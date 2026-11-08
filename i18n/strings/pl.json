@@ -77,7 +77,7 @@
     "reading_title": "Jak czytać wynik",
     "reading_p1": "Większość osób odpowiada wolniej, gdy słowo oznacza inny kolor niż kolor tuszu, często o kilkadziesiąt milisekund. Na wynik wpływa zmęczenie, rozproszenie i wprawa, więc porównuj go z własnymi wcześniejszymi wynikami, o tej samej porze dnia.",
     "reading_p2": "Ten test mierzy jeden rodzaj kontroli uwagi w jednym zadaniu. To nie jest diagnoza ani kliniczny test uwagi.",
-    "embed_title": "Osadź test na swojej stronie",
+    "embed_title": "Umieść test na swojej stronie",
     "embed_intro": "Pełny test Stroopa z upchin.app możesz bezpłatnie pokazać na własnej stronie. Jest dostępny w 17 językach: ustaw `data-lang` (lub `lang=` w adresie ramki) na jeden z kodów: {codes}.",
     "embed_script": "**Ze skryptem** ({file}), który dopasowuje wysokość ramki do treści:",
     "embed_html": "**Bez skryptu**, jeśli Twoja strona przyjmuje tylko HTML:",
