@@ -77,7 +77,7 @@
     "reading_title": "Sådan læser du resultatet",
     "reading_p1": "De fleste svarer langsommere, når ordet nævner en anden farve end blækkets, ofte med flere snese millisekunder. Træthed, distraktion og øvelse påvirker alle resultatet, så sammenlign dig med dig selv, på samme tidspunkt af dagen.",
     "reading_p2": "Testen måler én form for kontrol med opmærksomheden i én opgave. Den er ikke en diagnose og heller ikke en klinisk opmærksomhedstest.",
-    "embed_title": "Indlejr testen på dit websted",
+    "embed_title": "Sæt testen på dit websted",
     "embed_intro": "Du kan gratis vise den fulde Stroop-test fra upchin.app på din egen side. Den findes på 17 sprog: sæt `data-lang` (eller `lang=` i rammens adresse) til {codes}.",
     "embed_script": "**Med scriptet** ({file}), som tilpasser rammens højde til indholdet:",
     "embed_html": "**Uden script**, hvis dit websted kun accepterer HTML:",

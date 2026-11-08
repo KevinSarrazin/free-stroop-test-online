@@ -70,7 +70,7 @@
     "def_accuracy": "**Réponses justes** : la part de bonnes réponses.",
     "def_mean": "**Temps moyen** : ton temps de réponse moyen, calculé sur les seules réponses justes.",
     "def_split": "**Mot et encre identiques / différents** : les deux moyennes à partir desquelles l’effet Stroop est calculé.",
-    "method": "Chaque bloc d’essais compte autant de mots qui correspondent à leur encre que de mots qui n’y correspondent pas, chaque couleur d’encre y revient aussi souvent, et jamais deux fois de suite le même mot dans la même encre. Seules les réponses justes comptent dans les temps.",
+    "method": "Chaque bloc d’essais compte autant de mots qui correspondent à leur encre que de mots qui n’y correspondent pas, chaque couleur d’encre y revient le même nombre de fois, et jamais deux fois de suite le même mot dans la même encre. Seules les réponses justes comptent dans les temps.",
     "storage": "Les dix derniers tests sont conservés dans le stockage local de ton navigateur. Rien n’est envoyé nulle part : aucun pistage, aucun script externe, aucune inscription.",
     "run_title": "Lancer en local",
     "run": "Ouvre `index.html` dans n’importe quel navigateur. Aucune compilation, aucune dépendance.",
